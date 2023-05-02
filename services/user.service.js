@@ -3,6 +3,9 @@ import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { Image } from "../models/image.model.js";
+import {Shop} from "../models/shop.model.js"
+import {Product} from "../models/product.model.js"
+import {Cart} from "../models/cart.model.js"
 const RegisterUser = async (data) => {
   try {
     const { password, _id, role } = data;
@@ -49,13 +52,13 @@ const LoginUser = async (data) => {
 const getCurrentUser = async (data) => {
   const { id } = data;
   const uid = mongoose.Types.ObjectId(id);
-  const isCurrentUser = User.findOne({ _id: uid })
+  const isCurrentUser = await User.findOne({ _id: uid })
     .populate("shop")
     .populate("url");
   return isCurrentUser;
 };
 const GetAllUser = async () => {
-  const getAllUser = User.find({});
+  const getAllUser = await User.find({});
   return getAllUser;
 };
 const GetUserById = async (idUser) => {
@@ -65,8 +68,28 @@ const GetUserById = async (idUser) => {
 };
 const DeleteUser = async (idUser) => {
   const uid = mongoose.Types.ObjectId(idUser);
-  const deleteUser = User.deleteOne({ _id: uid });
-  return deleteUser;
+  // const deleteUser = await User.deleteOne({ _id: uid });
+  let promiseShop = new Promise((resole, reject) => {
+    const deleteShop = Shop.deleteOne({user : uid}, err => {
+      if(err) reject(err)
+      else resole("Đã xoá thành công")
+    })
+  })
+  let deleteCart = new Promise((resole, reject) => {
+     Cart.deleteOne({user_id : uid}, err => {
+      if(err) reject(err)
+      else resole("Đã xoá thành công")
+    })
+  })
+  let findShop = await Shop.findOne({user: uid})
+  await Product.deleteOne({shop: findShop._id})
+  let promiseUser = new Promise((resole, reject) => {
+    const deleteUser =  User.deleteOne({ _id: uid }, err => {
+      if(err) reject(err)
+      else resole("Đã xoá thành công")
+    })
+  })
+  Promise.all([promiseShop,promiseUser, deleteCart]).then(result => {return result}).catch(err => {return err})
 };
 const UpdateUser = async (data) => {
   const { _id, url, newPassword, ...rest } = data;

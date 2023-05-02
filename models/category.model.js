@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Mongoose, Schema, Types } from "mongoose";
 const CategorySchema = new Schema(
   {
     name: {
@@ -8,6 +8,10 @@ const CategorySchema = new Schema(
     slug: {
       type: String,
     },
+    url:{
+      type: Schema.Types.ObjectId,
+      ref: "Image"
+    }
   },
   { timestamps: true }
 );

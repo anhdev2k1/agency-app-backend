@@ -86,7 +86,7 @@ const ChangePassword = async (req, res) => {
 };
 const DeleteUser = async (req, res) => {
   try {
-    const result = await UserService.GetUserById(req.params.id);
+    const result = await UserService.DeleteUser(req.params.id);
     res.status(200).json({
       status: "Delete successfully!!",
       data: result,

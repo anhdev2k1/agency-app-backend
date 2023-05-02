@@ -10,6 +10,7 @@ import { CategoryRoute } from "./routes/category.route.js";
 import { cartRoute } from "./routes/cart.route.js";
 import { transactionRoute } from "./routes/transaction.route.js";
 import { OrderRoute } from "./routes/order.route.js";
+import { feedbackRoute } from "./routes/feedback.route.js";
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.use("/api", CategoryRoute);
 app.use("/api", cartRoute);
 app.use("/api", transactionRoute)
 app.use("/api", OrderRoute)
+app.use("/api",feedbackRoute)
 app.listen(PORT, () => {
   console.log(`The app is listening on port ${PORT}`);
 });

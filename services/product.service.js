@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Product } from "../models/product.model.js";
 import { Image } from "../models/image.model.js";
 const GetProducts = async () => {
-  const getAllProduct = await Product.find({})
+  const getAllProduct = await Product.find({}).sort({createdAt : -1})
     .populate("shop")
     .populate("category_id")
     .populate("image");
@@ -70,6 +70,10 @@ const DeleteProduct = async (idProduct) => {
   const deleteProduct = await Product.deleteOne({ _id: pid });
   return deleteProduct;
 };
+const SearchProducts = async (dataSearch) => {
+  const result = await Product.find({$text : {$search : dataSearch}})
+  return result
+};
 export const ProductService = {
   GetProducts,
   GetProductById,
@@ -77,5 +81,6 @@ export const ProductService = {
   UpdateProduct,
   DeleteProduct,
   GetProductByIds,
-  GetProductsByShop
+  GetProductsByShop,
+  SearchProducts
 };

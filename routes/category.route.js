@@ -6,5 +6,5 @@ router
   .route("/category")
   .get(CategoryController.getCategories)
   .post(CategoryController.createCategory);
-
+router.route("/category/search").get(CategoryController.SearchProductByCategory)
 export const CategoryRoute = router;
