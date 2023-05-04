@@ -3,9 +3,15 @@ import { Product } from "../models/product.model.js";
 import { Image } from "../models/image.model.js";
 const GetProducts = async () => {
   const getAllProduct = await Product.find({}).sort({createdAt : -1})
-    .populate("shop")
-    .populate("category_id")
-    .populate("image");
+  .populate({
+    path: "shop",
+    populate: {
+      path: "user",
+      populate: "url",
+    },
+  })
+  .populate("category_id")
+  .populate("image");
   return getAllProduct;
 };
 const GetProductById = async (idProduct) => {
@@ -71,7 +77,15 @@ const DeleteProduct = async (idProduct) => {
   return deleteProduct;
 };
 const SearchProducts = async (dataSearch) => {
-  const result = await Product.find({$text : {$search : dataSearch}})
+  const result = await Product.find({$text : {$search : dataSearch}}).populate({
+    path: "shop",
+    populate: {
+      path: "user",
+      populate: "url",
+    },
+  })
+  .populate("category_id")
+  .populate("image");
   return result
 };
 export const ProductService = {
