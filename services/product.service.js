@@ -1,31 +1,32 @@
-import mongoose from "mongoose";
-import { Product } from "../models/product.model.js";
-import { Image } from "../models/image.model.js";
+import mongoose from 'mongoose';
+import { Product } from '../models/product.model.js';
+import { Image } from '../models/image.model.js';
 const GetProducts = async () => {
-  const getAllProduct = await Product.find({}).sort({createdAt : -1})
-  .populate({
-    path: "shop",
-    populate: {
-      path: "user",
-      populate: "url",
-    },
-  })
-  .populate("category_id")
-  .populate("image");
+  const getAllProduct = await Product.find({})
+    .sort({ createdAt: -1 })
+    .populate({
+      path: 'shop',
+      populate: {
+        path: 'user',
+        populate: 'url',
+      },
+    })
+    .populate('category_id')
+    .populate('image');
   return getAllProduct;
 };
 const GetProductById = async (idProduct) => {
   const pid = mongoose.Types.ObjectId(idProduct);
   const getProduct = await Product.findOne(pid)
     .populate({
-      path: "shop",
+      path: 'shop',
       populate: {
-        path: "user",
-        populate: "url",
+        path: 'user',
+        populate: 'url',
       },
     })
-    .populate("category_id")
-    .populate("image");
+    .populate('category_id')
+    .populate('image');
   return getProduct;
 };
 const GetProductByIds = async (idProduct) => {
@@ -34,27 +35,28 @@ const GetProductByIds = async (idProduct) => {
   });
   const getProducts = await Product.find({ _id: { $in: pids } })
     .populate({
-      path: "shop",
-      populate: "user",
+      path: 'shop',
+      populate: 'user',
     })
-    .populate("category_id")
-    .populate("image");
+    .populate('category_id')
+    .populate('image');
   return getProducts;
 };
 const GetProductsByShop = async (idShop) => {
   const sid = mongoose.Types.ObjectId(idShop);
-  const getProducts = await Product.find({ shop: sid }).populate({
-    path: "shop",
-    populate: "user",
-  })
-  .populate("category_id")
-  .populate("image");
+  const getProducts = await Product.find({ shop: sid })
+    .populate({
+      path: 'shop',
+      populate: 'user',
+    })
+    .populate('category_id')
+    .populate('image');
   return getProducts;
 };
 const CreateProduct = async (data) => {
   const { url, ...rest } = data;
   const image = {
-    type: "product",
+    type: 'product',
     url,
   };
   const newImage = await Image.create(image);
@@ -62,13 +64,12 @@ const CreateProduct = async (data) => {
   const newProduct = await Product.create(product);
   return newProduct;
 };
-const UpdateProduct = async (data) => {
-  const { _id, ...preProduct } = data;
-  const pid = mongoose.Types.ObjectId(_id);
-  const updateProduct = await Product.findOneAndUpdate(
-    { _id: pid },
-    preProduct
-  );
+const UpdateProduct = async (id, data) => {
+  // const { _id, ...preProduct } = data;
+  const pid = mongoose.Types.ObjectId(id);
+  const updateProduct = await Product.findOneAndUpdate({ _id: pid }, data, {
+    new: true,
+  });
   return updateProduct;
 };
 const DeleteProduct = async (idProduct) => {
@@ -77,16 +78,17 @@ const DeleteProduct = async (idProduct) => {
   return deleteProduct;
 };
 const SearchProducts = async (dataSearch) => {
-  const result = await Product.find({$text : {$search : dataSearch}}).populate({
-    path: "shop",
-    populate: {
-      path: "user",
-      populate: "url",
-    },
-  })
-  .populate("category_id")
-  .populate("image");
-  return result
+  const result = await Product.find({ $text: { $search: dataSearch } })
+    .populate({
+      path: 'shop',
+      populate: {
+        path: 'user',
+        populate: 'url',
+      },
+    })
+    .populate('category_id')
+    .populate('image');
+  return result;
 };
 export const ProductService = {
   GetProducts,
@@ -96,5 +98,5 @@ export const ProductService = {
   DeleteProduct,
   GetProductByIds,
   GetProductsByShop,
-  SearchProducts
+  SearchProducts,
 };

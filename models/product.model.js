@@ -1,9 +1,9 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 const ProductSchema = new Schema(
   {
     category_id: {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
     name: {
       type: String,
@@ -26,14 +26,14 @@ const ProductSchema = new Schema(
     },
     shop: {
       type: Schema.Types.ObjectId,
-      ref: "Shop",
+      ref: 'Shop',
     },
     image: {
       type: Schema.Types.ObjectId,
-      ref: "Image",
+      ref: 'Image',
     },
   },
   { timestamps: true }
 );
-const ProductModel = mongoose.model("Product", ProductSchema);
+const ProductModel = mongoose.model('Product', ProductSchema);
 export const Product = ProductModel;
