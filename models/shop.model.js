@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 const ShopSchema = new Schema(
   {
     name: {
@@ -7,7 +7,7 @@ const ShopSchema = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       require: true,
     },
     slug: {
@@ -23,5 +23,5 @@ const ShopSchema = new Schema(
   },
   { timestamps: true }
 );
-const ShopModel = mongoose.model("Shop", ShopSchema);
+const ShopModel = mongoose.model('Shop', ShopSchema);
 export const Shop = ShopModel;
