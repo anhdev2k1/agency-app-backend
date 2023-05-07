@@ -1,4 +1,4 @@
-import mongoose, { Mongoose, Schema, Types } from "mongoose";
+import mongoose, { Mongoose, Schema, Types } from 'mongoose';
 const CategorySchema = new Schema(
   {
     name: {
@@ -8,12 +8,13 @@ const CategorySchema = new Schema(
     slug: {
       type: String,
     },
-    url:{
+    url: {
       type: Schema.Types.ObjectId,
-      ref: "Image"
-    }
+      ref: 'Image',
+    },
+    deletedAt: Date,
   },
   { timestamps: true }
 );
-const CategoryModel = mongoose.model("Category", CategorySchema);
+const CategoryModel = mongoose.model('Category', CategorySchema);
 export const Category = CategoryModel;
