@@ -76,13 +76,13 @@ const DeleteUser = async (idUser) => {
     })
   })
   let deleteCart = new Promise((resole, reject) => {
-     Cart.deleteOne({user_id : uid}, err => {
+     Cart.deleteMany({user_id : uid}, err => {
       if(err) reject(err)
       else resole("Đã xoá thành công")
     })
   })
   let findShop = await Shop.findOne({user: uid})
-  await Product.deleteOne({shop: findShop._id})
+  await Product.deleteMany({shop: findShop._id})
   let promiseUser = new Promise((resole, reject) => {
     const deleteUser =  User.deleteOne({ _id: uid }, err => {
       if(err) reject(err)

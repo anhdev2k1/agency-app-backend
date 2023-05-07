@@ -117,10 +117,10 @@ const getOrderById = async (idOrder) => {
     throw error;
   }
 };
-const updateOrder = async (idOrder, data) => {
+const updateOrder = async (idTrans, data) => {
   try {
-    const oid = mongoose.Types.ObjectId(idOrder);
-    const result = await Order.findOneAndUpdate({ _id: oid},{$set: {status: data.status}})
+    const oid = mongoose.Types.ObjectId(idTrans);
+    const result = await Order.updateMany({transaction : oid},{$set : {status: data.status}})
       .populate({
         path: "transaction",
         populate:"user"

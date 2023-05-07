@@ -17,7 +17,7 @@ const getTransactionByUser = async (user) => {
     const idTrans = transaction.map((item) => {
       return item._id;
     });
-    const order = await Order.find({ transaction: { $in: idTrans } })
+    const order = await Order.find({ transaction: { $in: idTrans } }).sort({createdAt : -1})
       .populate({
         path: "transaction",
         populate: "user",
