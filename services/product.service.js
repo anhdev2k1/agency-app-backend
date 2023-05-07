@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { Product } from '../models/product.model.js';
 import { Image } from '../models/image.model.js';
+import moment from 'moment';
+
 const GetProducts = async () => {
   const getAllProduct = await Product.find({})
     .sort({ createdAt: -1 })
@@ -74,7 +76,11 @@ const UpdateProduct = async (id, data) => {
 };
 const DeleteProduct = async (idProduct) => {
   const pid = mongoose.Types.ObjectId(idProduct);
-  const deleteProduct = await Product.deleteOne({ _id: pid });
+  const deleteProduct = await Product.findOneAndUpdate(
+    { _id: pid },
+    { deletedAt: moment().toDate() },
+    { new: true }
+  );
   return deleteProduct;
 };
 const SearchProducts = async (dataSearch) => {

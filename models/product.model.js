@@ -32,6 +32,7 @@ const ProductSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Image',
     },
+    deletedAt: Date,
   },
   { timestamps: true }
 );
