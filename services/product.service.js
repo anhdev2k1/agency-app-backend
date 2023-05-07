@@ -87,7 +87,7 @@ const SearchProducts = async (dataSearch) => {
   .populate("category_id")
   .populate("image");
   return result
-};
+};  
 export const ProductService = {
   GetProducts,
   GetProductById,
