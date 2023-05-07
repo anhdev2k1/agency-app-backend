@@ -1,13 +1,13 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 const OrderSchema = new Schema(
   {
     transaction: {
       type: Schema.Types.ObjectId,
-      ref: "Transaction",
+      ref: 'Transaction',
     },
     product: {
       type: Schema.Types.ObjectId,
-      ref: "Product",
+      ref: 'Product',
     },
     quantity: {
       type: Number,
@@ -26,10 +26,11 @@ const OrderSchema = new Schema(
       type: Number,
     },
     shop_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Shop',
     },
   },
   { timestamps: true }
 );
-const OrderModel = mongoose.model("Order", OrderSchema);
+const OrderModel = mongoose.model('Order', OrderSchema);
 export const Order = OrderModel;
