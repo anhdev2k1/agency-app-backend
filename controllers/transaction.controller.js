@@ -41,4 +41,16 @@ const getTransactionByUser = async (req, res) => {
     });
   }
 };
-export const transactionController = { getTransaction, createTransaction, getTransactionByUser };
+const updateTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await transactionService.updateTransaction(id, req.body);
+    res.status(200).json({
+      status: "Create Order successfully!!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(401).json(error);
+  }
+};
+export const transactionController = { getTransaction, createTransaction, getTransactionByUser, updateTransaction };

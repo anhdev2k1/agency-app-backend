@@ -23,6 +23,7 @@ const createCategory = async (data) => {
 };
 const SearchProductByCategory = async (data) => {
   const result = await Category.findOne({ $text: { $search: data } });
+  console.log(result);
   const search = await Product.find({ category_id: result._id })
     .populate({
       path: 'shop',

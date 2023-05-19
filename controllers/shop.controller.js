@@ -13,7 +13,7 @@ const CreateShop = async (req, res) => {
 };
 const GetShop = async (req, res) => {
   try {
-    const result = await ShopService.GetShop();
+    const result = await ShopService.GetShop({});
     res.status(200).json({
       status: 'success',
       data: result,

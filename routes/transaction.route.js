@@ -10,4 +10,5 @@ router
 router
   .route("/transaction/user")
   .post(UserVerifyToken.verifyToken, transactionController.getTransactionByUser);
+router.route("/transaction/:id").put(transactionController.updateTransaction)
 export const transactionRoute = router;

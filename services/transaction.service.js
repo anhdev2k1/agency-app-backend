@@ -55,9 +55,26 @@ const createTransaction = async (data) => {
     throw error;
   }
 };
-
+const updateTransaction = async (idTrans, data) => {
+  try {
+    const tid = mongoose.Types.ObjectId(idTrans);
+    const result = await Order.updateMany({transaction : tid},{$set : {status: data.status}})
+      .populate({
+        path: "transaction",
+        populate:"user"
+      })
+      .populate({
+        path: "product",
+        populate: "image",
+      });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
 export const transactionService = {
   createTransaction,
   getTransaction,
   getTransactionByUser,
+  updateTransaction
 };

@@ -15,7 +15,7 @@ const ShopSchema = new Schema(
       require: true,
     },
     page: {
-      type: Array,
+      type: Object,
     },
     category: {
       type: String,

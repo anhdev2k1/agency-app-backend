@@ -24,6 +24,7 @@ const createCategory = async (req, res) => {
 };
 const SearchProductByCategory = async (req, res) => {
   try {
+    console.log(req.query.q);
     const result = await CategoryService.SearchProductByCategory(req.query.q);
     res.status(200).json({
       status: 'Search product by category successfully!!',
