@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import { Product } from '../models/product.model.js';
 import { Image } from '../models/image.model.js';
 import moment from 'moment';
-
+import {Cart} from "../models/cart.model.js"
 const GetProducts = async () => {
-  const getAllProduct = await Product.find({})
+  const getAllProduct = await Product.find({deletedAt: null})
     .sort({ createdAt: -1 })
     .populate({
       path: 'shop',
@@ -19,16 +19,17 @@ const GetProducts = async () => {
 };
 const GetProductById = async (idProduct) => {
   const pid = mongoose.Types.ObjectId(idProduct);
-  const getProduct = await Product.findOne(pid)
+  const getProduct = await Product.findOne({_id: pid})
     .populate({
       path: 'shop',
       populate: {
         path: 'user',
         populate: 'url',
       },
+      
     })
     .populate('category_id')
-    .populate('image');
+    .populate('image')
   return getProduct;
 };
 const GetProductByIds = async (idProduct) => {
@@ -84,7 +85,7 @@ const DeleteProduct = async (idProduct) => {
   return deleteProduct;
 };
 const SearchProducts = async (dataSearch) => {
-  const result = await Product.find({ $text: { $search: dataSearch } })
+  const result = await Product.find({ $text: { $search: dataSearch }})
     .populate({
       path: 'shop',
       populate: {

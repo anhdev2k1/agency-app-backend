@@ -1,18 +1,57 @@
 import { UserService } from "../services/user.service.js";
 
+
 const RegisterUser = async (req, res) => {
   try {
-    const result = await UserService.RegisterUser(req.body);
+    // const result = await UserService.RegisterUser(req.body);
+    // res.status(200).json({
+    //   status: "Register successfully!!",
+    //   data: result,
+    // });
+
+    await UserService.RegisterUser(req.body);
     res.status(200).json({
-      status: "Register successfully!!",
-      data: result,
+      status: "Check your email to verify code",
+      data: null,
     });
+
   } catch (error) {
     res.status(400).json({
       error: error.message,
     });
   }
 };
+
+const verifyCode = async (req, res) => {
+  try {
+    const result = await UserService.verifyCode(req.body)
+    res.status(200).json({
+      status: "success",
+      data: result,
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+}
+
+const sendCodeAgain = async (req, res) => {
+  try {
+    const result = await UserService.sendCodeAgain(req.body)
+    res.status(200).json({
+      status: "Check your email to verify code",
+      data: null,
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+}
+
 const LoginUser = async (req, res) => {
   try {
     const result = await UserService.LoginUser(req.body);
@@ -112,9 +151,12 @@ const UpdateUser = async (req, res) => {
     });
   }
 };
+
 export const UserController = {
   LoginUser,
   RegisterUser,
+  verifyCode,
+  sendCodeAgain,
   getCurrentUser,
   GetAllUser,
   GetUserById,

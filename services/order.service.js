@@ -16,7 +16,7 @@ const getOrder = async () => {
 const getOrderByShop = async (idPage) => {
   try {
     const pid = mongoose.Types.ObjectId(idPage);
-    const result = await Order.find({ shop_id: pid })
+    const result = await Order.find({ shop_id: pid }).sort({ createdAt: -1 })
       .populate({
         path: "transaction",
         populate:"user"

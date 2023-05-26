@@ -2,16 +2,19 @@ import mongoose from "mongoose";
 import { Feedback } from "../models/feedback.model.js";
 
 const getAllFeedback = async () => {
-    const result = Feedback.find({});
+    const result = await Feedback.find({});
     return result;
 };
 const createFeedback = async (data) => {
-    const deleteUser = Feedback.create(data);
-    return deleteUser;
+    const createFeedback = await Feedback.create(data);
+    return createFeedback;
 };
 const getFeedbackById = async (data) => {
     const id = mongoose.Types.ObjectId(data);
-    const result = User.deleteOne({ user: id });
+    const result = await Feedback.find({ product: id }).populate({
+        path: 'user',
+        select: 'name _id',
+    }).lean()
     return result;
 };
 export const feedbackService = {getAllFeedback, createFeedback, getFeedbackById}

@@ -15,12 +15,14 @@ const getCartByUser = async (data) => {
   try {
     const { id } = data;
     const uid = mongoose.Types.ObjectId(id);
+    
     const result = await Cart.find({ user_id: uid })
       .populate({
         path: "product_id",
         populate: [{ path: "image" }, { path: "shop" }],
       })
-      .populate("user_id");
+      .populate("user_id").lean();
+    
     return result;
   } catch (error) {
     throw error;

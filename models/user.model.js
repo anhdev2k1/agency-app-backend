@@ -37,7 +37,22 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Shop",
     },
+    code: {
+      type: String,
+      default: null,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    expiresIn: {
+      type: Date,
+      default: null,
+    },
+    deletedAt: Date,
+    partnerAt: Date
   },
+  
   { timestamps: true }
 );
 const UserModel = mongoose.model("User", UserSchema);

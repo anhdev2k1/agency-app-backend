@@ -1,31 +1,38 @@
-import { Shop } from '../models/shop.model.js';
-import { User } from '../models/user.model.js';
-import { Order } from '../models/order.model.js';
-import Utils from '../utils/Utils.js';
-import mongoose from 'mongoose';
-import moment from 'moment';
+import { Shop } from "../models/shop.model.js";
+import { User } from "../models/user.model.js";
+import { Order } from "../models/order.model.js";
+import Utils from "../utils/Utils.js";
+import mongoose from "mongoose";
+import moment from "moment";
 
 const CreateShop = async (data) => {
   const newShop = await Shop.create(data);
-  const uid = mongoose.Types.ObjectId(data.user);
   const updateUser = await User.findOneAndUpdate(
-    { _id: uid },
-    { $set: { role: 2 } }
+    { _id: newShop.user },
+    { partnerAt: moment().toDate() },
+    { new: true }
   );
+  // const uid = mongoose.Types.ObjectId(data.user);
+  // const updateShop = await Shop.findOneAndUpdate(
+  //   { _id: uid },
+  //   // { $set: { role: 2 } }
+  //   {partnerAt: moment().toDate()},
+  //   { new: true }
+  // );
   return newShop;
 };
 const GetShop = async () => {
-  const getShop = await Shop.find({}).populate('user');
+  const getShop = await Shop.find({}).populate("user");
   return getShop;
 };
 const GetShopById = async (idUser) => {
   const uid = mongoose.Types.ObjectId(idUser);
-  const getShop = await Shop.findOne({ user: uid }).populate('user');
+  const getShop = await Shop.findOne({ user: uid }).populate("user");
   return getShop;
 };
 const getShopByIdPage = async (idPage) => {
   const pid = mongoose.Types.ObjectId(idPage);
-  const getShop = await Shop.findOne({ _id: pid }).populate('user');
+  const getShop = await Shop.findOne({ _id: pid }).populate("user");
   return getShop;
 };
 const UpdateShop = async (pageID, content) => {
@@ -39,9 +46,9 @@ const DeleteShop = async (idShop) => {
   return deleteShop;
 };
 
-const getShopOrderStats = async (idShop, options = { type: 'month' }) => {
+const getShopOrderStats = async (idShop, options = { type: "month" }) => {
   const shopOrders = await Order.find({ shop_id: idShop })
-    .populate('product')
+    .populate("product")
     .lean();
 
   const mostProductList = shopOrders.reduce((productList, order) => {
@@ -63,7 +70,7 @@ const getShopOrderStats = async (idShop, options = { type: 'month' }) => {
   }, []);
 
   const todayOrders = shopOrders.filter((order) =>
-    moment(order.createdAt).isSame(moment(), 'day')
+    moment(order.createdAt).isSame(moment(), "day")
   );
 
   let chartLabels = [];
@@ -73,14 +80,14 @@ const getShopOrderStats = async (idShop, options = { type: 'month' }) => {
   };
 
   switch (options.type) {
-    case 'month':
+    case "month":
       chartLabels = Utils.getDateListFromMonth(options.value);
 
       chartLabels.forEach((date) => {
         let income = 0;
         let orderCount = 0;
         let targetOrders = shopOrders.filter((order) =>
-          moment(order.createdAt).isSame(moment(date, 'DD/MM/YYYY'), 'day')
+          moment(order.createdAt).isSame(moment(date, "DD/MM/YYYY"), "day")
         );
         income = targetOrders.reduce((sum, order) => sum + order.amount, 0);
         orderCount = targetOrders.length;
@@ -88,13 +95,13 @@ const getShopOrderStats = async (idShop, options = { type: 'month' }) => {
         chartData.orders.push(orderCount);
       });
       break;
-    case 'year':
+    case "year":
       chartLabels = Utils.getMonthListFromYear(options.value);
       chartLabels.forEach((date) => {
         let income = 0;
         let orderCount = 0;
         let targetOrders = shopOrders.filter((order) =>
-          moment(order.createdAt).isSame(moment(date, 'MM/YYYY'), 'month')
+          moment(order.createdAt).isSame(moment(date, "MM/YYYY"), "month")
         );
         income = targetOrders.reduce((sum, order) => sum + order.amount, 0);
         orderCount = targetOrders.length;

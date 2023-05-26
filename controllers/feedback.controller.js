@@ -1,3 +1,4 @@
+import {feedbackService} from "../services/feedback.service.js"
 const getAllFeedback = async (req, res) => {
   try {
     const result = await feedbackService.getAllFeedback();

@@ -28,4 +28,12 @@ const getMonthListFromYear = (year) => {
   return months;
 };
 
-export default { getDateListFromMonth, getMonthListFromYear };
+
+const generateCode = () => {
+  const code = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000).toString();
+  const codeLifeTimeMinutes = 5;
+  const expiresIn = new Date(Date.now() + codeLifeTimeMinutes * 60 * 1000);
+  return { code, codeLifeTimeMinutes, expiresIn };
+}
+
+export default { getDateListFromMonth, getMonthListFromYear, generateCode };

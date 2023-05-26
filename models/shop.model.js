@@ -20,6 +20,7 @@ const ShopSchema = new Schema(
     category: {
       type: String,
     },
+    partnerAt: Date
   },
   { timestamps: true }
 );

@@ -12,6 +12,7 @@ import { transactionRoute } from './routes/transaction.route.js';
 import { OrderRoute } from './routes/order.route.js';
 import { feedbackRoute } from './routes/feedback.route.js';
 import { AdminRoute } from './routes/admin.route.js';
+import { contactRoute } from './routes/contact.route.js';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,7 @@ app.use('/api', transactionRoute);
 app.use('/api', OrderRoute);
 app.use('/api/admin', AdminRoute);
 app.use('/api', feedbackRoute);
+app.use('/api',contactRoute)
 app.listen(PORT, () => {
   console.log(`The app is listening on port ${PORT}`);
 });

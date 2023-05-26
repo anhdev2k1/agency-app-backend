@@ -3,8 +3,12 @@ import { UserController } from "../controllers/users.controller.js";
 import { UserVerifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
-router.route("/user/login").post(UserController.LoginUser);
 router.route("/user/register").post(UserController.RegisterUser);
+
+router.post('/user/verifyCode', UserController.verifyCode)
+router.post('/user/sendCodeAgain', UserController.sendCodeAgain)
+
+router.route("/user/login").post(UserController.LoginUser);
 router
   .route("/currentUser")
   .post(UserVerifyToken.verifyToken, UserController.getCurrentUser);
