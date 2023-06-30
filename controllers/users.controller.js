@@ -3,17 +3,17 @@ import { UserService } from "../services/user.service.js";
 
 const RegisterUser = async (req, res) => {
   try {
-    // const result = await UserService.RegisterUser(req.body);
-    // res.status(200).json({
-    //   status: "Register successfully!!",
-    //   data: result,
-    // });
-
-    await UserService.RegisterUser(req.body);
+    const result = await UserService.RegisterUser(req.body);
     res.status(200).json({
-      status: "Check your email to verify code",
-      data: null,
+      status: "Register successfully!!",
+      data: result,
     });
+
+    // await UserService.RegisterUser(req.body);
+    // res.status(200).json({
+    //   status: "Check your email to verify code",
+    //   data: null,
+    // });
 
   } catch (error) {
     res.status(400).json({

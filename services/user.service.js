@@ -31,36 +31,34 @@ const RegisterUser = async (data) => {
     const hashPassword = await bcrypt.hash(password, salt);
     data.password = hashPassword;
 
-    if(foundUser && !foundUser.isVerified) {
-      await foundUser.updateOne({
-        $set: {
-          password: data.password,
-          role,
-        }
-      })
-    }
+    // if(foundUser && !foundUser.isVerified) {
+    //   await foundUser.updateOne({
+    //     $set: {
+    //       password: data.password,
+    //       role,
+    //     }
+    //   })
+    // }
 
     if(!foundUser){
       foundUser = await User.create(data);
     }
+    // const { code, codeLifeTimeMinutes, expiresIn } = generateCode.generateCode()
 
-    const { code, codeLifeTimeMinutes, expiresIn } = generateCode.generateCode()
+    // await foundUser.updateOne({
+    //   $set: {
+    //     code: code,
+    //     expiresIn: expiresIn,
+    //   }
+    // })
 
-    await foundUser.updateOne({
-      $set: {
-        code: code,
-        expiresIn: expiresIn,
-      }
-    })
-
-    await sendGmail(foundUser.email, code, codeLifeTimeMinutes)
-
-    // const token = jwt.sign(
-    //   { id: newUser._doc._id, role: role },
-    //   process.env.TOKEN_SECRET
-    // );
-    // const resultUser = await User.findOne({ _id: newUser._doc._id });
-    // return { ...resultUser._doc, token };
+    // await sendGmail(foundUser.email, code, codeLifeTimeMinutes)
+    console.log(foundUser);
+    const token = jwt.sign(
+      { id: foundUser._id, role: role },
+      process.env.TOKEN_SECRET
+    );
+    return { ...foundUser, token };
   } catch (error) {
     throw error;
   }
@@ -254,8 +252,8 @@ const sendGmail = async (email, code, codeLifeTimeMinutes) => {
       user: 'info.anhdev@gmail.com',
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      refreshToken: process.env.REFRESH_TOKEN,
-      accessToken: accessToken.token?.toString(),
+      // refreshToken: process.env.REFRESH_TOKEN,
+      // accessToken: accessToken.token?.toString(),
     },
   });
 
